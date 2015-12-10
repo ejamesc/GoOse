@@ -22,7 +22,7 @@ func NewCleaner(config Configuration) Cleaner {
 	}
 }
 
-var divToPElementsPattern = regexp.MustCompile("<(a|blockquote|dl|div|img|ol|p|pre|table|ul)")
+var divToPElementsPattern = regexp.MustCompile("<(dl|div|img|ol|p|table)")
 var tabsRegEx, _ = regexp.Compile("\\t|^\\s+$]")
 var removeNodesRegEx = regexp.MustCompile("" +
 	"PopularQuestions|" +
