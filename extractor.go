@@ -456,7 +456,7 @@ func (extr *ContentExtractor) isBoostable(node *goquery.Selection) bool {
 //returns a list of nodes we want to search on like paragraphs and tables
 func (extr *ContentExtractor) nodesToCheck(doc *goquery.Document) []*goquery.Selection {
 	var output []*goquery.Selection
-	tags := []string{"p", "pre", "td", "h1", "h2", "h3", "h4", "h5", "h6"}
+	tags := []string{"p", "pre", "td"}
 	for _, tag := range tags {
 		selections := doc.Children().Find(tag)
 		if selections != nil {
