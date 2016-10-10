@@ -2,12 +2,13 @@ package goose
 
 import (
 	"container/list"
-	"github.com/advancedlogic/goquery"
-	"golang.org/x/net/html"
-	"golang.org/x/net/html/atom"
 	"log"
 	"regexp"
 	"strings"
+
+	"github.com/advancedlogic/goquery"
+	"golang.org/x/net/html"
+	"golang.org/x/net/html/atom"
 )
 
 // Cleaner removes menus, ads, sidebars, etc. and leaves the main content
@@ -205,7 +206,7 @@ func (c *Cleaner) clean(article *Article) *goquery.Document {
 	}
 	docToClean := article.Doc
 	docToClean = c.cleanArticleTags(docToClean)
-	docToClean = c.cleanEMTags(docToClean)
+	// docToClean = c.cleanEMTags(docToClean) - Cedric, I want to keep em tags!
 	docToClean = c.dropCaps(docToClean)
 	docToClean = c.removeScriptsStyle(docToClean)
 	docToClean = c.cleanBadTags(docToClean, removeNodesRegEx, &[]string{"id", "class", "name"})
