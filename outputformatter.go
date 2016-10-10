@@ -1,12 +1,11 @@
 package goose
 
 import (
+	"github.com/advancedlogic/goquery"
+	"golang.org/x/net/html"
 	"regexp"
 	"strconv"
 	"strings"
-
-	"github.com/advancedlogic/goquery"
-	"golang.org/x/net/html"
 )
 
 var normalizeWhitespaceRegexp = regexp.MustCompile(`[ \r\f\v\t]+`)
@@ -39,8 +38,7 @@ func (formatter *outputFormatter) getFormattedText(article *Article) (output str
 	}
 	formatter.removeNegativescoresNodes()
 	links = formatter.linksToText()
-	// Cedric: I want to keep bold, strong, and em tags
-	// formatter.replaceTagsWithText()
+	formatter.replaceTagsWithText()
 	formatter.removeParagraphsWithFewWords()
 	output = formatter.getOutputText()
 	return
