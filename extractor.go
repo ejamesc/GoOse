@@ -428,7 +428,7 @@ func (extr *ContentExtractor) isBoostable(node *goquery.Selection) bool {
 	next := node.Next()
 	for next != nil && stepsAway < node.Siblings().Length() {
 		currentNodeTag := node.Get(0).DataAtom.String()
-		if currentNodeTag == "p" {
+		if isCandidateTag(currentNodeTag) {
 			if stepsAway >= 3 {
 				if extr.config.debug {
 					log.Println("Next paragraph is too far away, not boosting")
@@ -559,7 +559,8 @@ func (extr *ContentExtractor) getSiblingsScore(topNode *goquery.Selection) int {
 
 func (extr *ContentExtractor) getSiblingsContent(currentSibling *goquery.Selection, baselinescoreSiblingsPara float64) []*goquery.Selection {
 	var ps []*goquery.Selection
-	if currentSibling.Get(0).DataAtom.String() == "p" && len(currentSibling.Text()) > 0 {
+	currentTag := currentSibling.Get(0).DataAtom.String()
+	if isCandidateTag(currentTag) && len(currentSibling.Text()) > 0 {
 		ps = append(ps, currentSibling)
 		return ps
 	}
@@ -631,7 +632,7 @@ func (extr *ContentExtractor) postCleanup(targetNode *goquery.Selection) *goquer
 	children := node.Children()
 	children.Each(func(i int, s *goquery.Selection) {
 		tag := s.Get(0).DataAtom.String()
-		if tag != "p" && tag != "h1" && tag != "h2" && tag != "h3" && tag != "h4" && tag != "h5" && tag != "h6" && tag != "strong" {
+		if !isCandidateTag(tag) {
 			if extr.config.debug {
 				log.Printf("CLEANUP  NODE: %s class: %s\n", extr.config.parser.name("id", s), extr.config.parser.name("class", s))
 			}
@@ -663,4 +664,19 @@ func (extr *ContentExtractor) postCleanup(targetNode *goquery.Selection) *goquer
 		}
 	})
 	return node
+}
+
+func isCandidateTag(tag string) bool {
+	return tag == "p" || tag == "h1" || tag == "h2" || tag == "h3" || tag == "h4" || tag == "h5" || tag == "h6" || tag == "strong"
+}
+
+func findPotentialNodes(in *goquery.Selection) *goquery.Selection {
+	res := in.Find("p")
+	res = res.AddSelection(in.Find("h1"))
+	res = res.AddSelection(in.Find("h2"))
+	res = res.AddSelection(in.Find("h3"))
+	res = res.AddSelection(in.Find("h4"))
+	res = res.AddSelection(in.Find("h5"))
+	res = res.AddSelection(in.Find("h6"))
+	return res
 }
