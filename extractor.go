@@ -541,7 +541,7 @@ func (extr *ContentExtractor) getSiblingsScore(topNode *goquery.Selection) int {
 	base := 100000
 	paragraphNumber := 0
 	paragraphScore := 0
-	nodesToCheck := topNode.Find("p")
+	nodesToCheck := findPotentialNodes(topNode)
 	nodesToCheck.Each(func(i int, s *goquery.Selection) {
 		textNode := s.Text()
 		ws := extr.config.stopWords.stopWordsCount(extr.config.targetLanguage, textNode)
@@ -565,7 +565,7 @@ func (extr *ContentExtractor) getSiblingsContent(currentSibling *goquery.Selecti
 		return ps
 	}
 
-	potentialParagraphs := currentSibling.Find("p")
+	potentialParagraphs := findPotentialNodes(currentSibling)
 	potentialParagraphs.Each(func(i int, s *goquery.Selection) {
 		text := s.Text()
 		if len(text) > 0 {
