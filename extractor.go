@@ -2,16 +2,17 @@ package goose
 
 import (
 	"container/list"
-	"github.com/advancedlogic/goquery"
-	"golang.org/x/net/html"
-	"golang.org/x/net/html/atom"
-	"gopkg.in/fatih/set.v0"
 	"log"
 	"math"
 	"net/url"
 	"regexp"
 	"strconv"
 	"strings"
+
+	"github.com/advancedlogic/goquery"
+	"golang.org/x/net/html"
+	"golang.org/x/net/html/atom"
+	"gopkg.in/fatih/set.v0"
 )
 
 const defaultLanguage = "en"
@@ -630,7 +631,7 @@ func (extr *ContentExtractor) postCleanup(targetNode *goquery.Selection) *goquer
 	children := node.Children()
 	children.Each(func(i int, s *goquery.Selection) {
 		tag := s.Get(0).DataAtom.String()
-		if tag != "p" {
+		if tag != "p" && tag != "h1" && tag != "h2" && tag != "h3" && tag != "h4" && tag != "h5" && tag != "h6" && tag != "strong" {
 			if extr.config.debug {
 				log.Printf("CLEANUP  NODE: %s class: %s\n", extr.config.parser.name("id", s), extr.config.parser.name("class", s))
 			}
